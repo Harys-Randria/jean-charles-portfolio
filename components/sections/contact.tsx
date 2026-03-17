@@ -108,6 +108,7 @@ export function ContactSection() {
   const [isLoading, setIsLoading] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isMounted, setIsMounted] = useState(false)
+  const [particles, setParticles] = useState<Array<{ x: number; y: number }>>([])
   
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
   
@@ -121,6 +122,11 @@ export function ContactSection() {
 
   useEffect(() => {
     setIsMounted(true)
+    const newParticles = [...Array(6)].map(() => ({
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+    }))
+    setParticles(newParticles)
   }, [])
 
   useEffect(() => {
@@ -202,26 +208,30 @@ export function ContactSection() {
       )}
 
       {/* Floating particles */}
-      {[...Array(6)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-1 h-1 bg-primary/30 dark:bg-primary/20 rounded-full"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            y: [0, -30, 0],
-            opacity: [0, 0.3, 0],
-          }}
-          transition={{
-            duration: 4 + i,
-            repeat: Infinity,
-            delay: i * 0.5,
-            ease: "easeInOut"
-          }}
-        />
-      ))}
+      {isMounted && particles.length > 0 && (
+        <>
+          {particles.map((particle, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-primary/20 rounded-full"
+              style={{
+                left: `${particle.x}%`,
+                top: `${particle.y}%`,
+              }}
+              animate={{
+                y: [0, -30, 0],
+                opacity: [0, 0.3, 0],
+              }}
+              transition={{
+                duration: 4 + i,
+                repeat: Infinity,
+                delay: i * 0.5,
+                ease: "easeInOut"
+              }}
+            />
+          ))}
+        </>
+      )}
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}

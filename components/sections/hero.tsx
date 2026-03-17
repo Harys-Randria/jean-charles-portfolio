@@ -1,7 +1,7 @@
 "use client"
 
 import { motion, useScroll, useTransform } from "framer-motion"
-import { ArrowDown, Code2, Database, Server, Cloud, Terminal, Sparkles, Zap, FileText } from "lucide-react" // Ajout de FileText
+import { ArrowDown, Code2, Database, Server, Cloud, Terminal, Sparkles, Zap, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useEffect, useState } from "react"
@@ -25,6 +25,8 @@ const floatingIcons = [
 export function HeroSection() {
   const { scrollY } = useScroll()
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [particles, setParticles] = useState<Array<{ x: number; y: number }>>([])
+  const [isMounted, setIsMounted] = useState(false)
 
   // Parallax effect on scroll
   const y1 = useTransform(scrollY, [0, 500], [0, -100])
@@ -32,8 +34,25 @@ export function HeroSection() {
   const opacity = useTransform(scrollY, [0, 300], [1, 0.3])
   const scale = useTransform(scrollY, [0, 300], [1, 0.95])
 
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  // Générer les particules après le montage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const newParticles = [...Array(5)].map(() => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+      }))
+      setParticles(newParticles)
+    }
+  }, [])
+
   // Mouse move parallax for gradient blobs
   useEffect(() => {
+    if (!isMounted) return
+
     const handleMouseMove = (e: MouseEvent) => {
       const { clientX, clientY } = e
       const centerX = window.innerWidth / 2
@@ -47,7 +66,7 @@ export function HeroSection() {
 
     window.addEventListener('mousemove', handleMouseMove)
     return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
+  }, [isMounted])
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -161,30 +180,31 @@ export function HeroSection() {
         </motion.div>
       ))}
 
-      {/* Subtle particle effect */}
-      <div className="absolute inset-0 pointer-events-none">
-        {[...Array(5)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-primary/20 rounded-full"
-            initial={{ 
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-              opacity: 0 
-            }}
-            animate={{ 
-              y: [null, -30],
-              opacity: [0, 0.3, 0],
-            }}
-            transition={{ 
-              duration: 3 + i,
-              repeat: Infinity,
-              delay: i * 0.5,
-              ease: "easeInOut"
-            }}
-          />
-        ))}
-      </div>
+      {/* Subtle particle effect - Version corrigée */}
+      {particles.length > 0 && (
+        <div className="absolute inset-0 pointer-events-none">
+          {particles.map((particle, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-primary/20 rounded-full"
+              style={{
+                left: particle.x,
+                top: particle.y,
+              }}
+              animate={{ 
+                y: [0, -30, 0],
+                opacity: [0, 0.3, 0],
+              }}
+              transition={{ 
+                duration: 3 + i,
+                repeat: Infinity,
+                delay: i * 0.5,
+                ease: "easeInOut"
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Main content */}
       <motion.div 
@@ -282,7 +302,7 @@ export function HeroSection() {
               ))}
             </motion.div>
 
-            {/* Boutons - Structure corrigée */}
+            {/* Boutons */}
             <motion.div
               variants={itemVariants}
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
@@ -308,7 +328,7 @@ export function HeroSection() {
                 </Button>
               </motion.div>
 
-              {/* Nouveau bouton CV */}
+              {/* Bouton CV */}
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -433,7 +453,7 @@ export function HeroSection() {
         </div>
       </motion.div>
 
-      {/* Scroll indicator — ancré en bas avec animation améliorée */}
+      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
