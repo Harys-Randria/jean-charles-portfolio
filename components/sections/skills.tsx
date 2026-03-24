@@ -45,7 +45,7 @@ const skillCategories = [
   },
   {
     category: "Frameworks & Bibliothèques Frontend",
-    skills: ["Vue.js", "Twig", "Sass"],
+    skills: ["Vue.js","Nuxt.js", "Twig", "Sass"],
     color: "from-emerald-100 to-emerald-200 dark:from-emerald-500/20 dark:to-emerald-600/20",
     lightColor: "bg-emerald-50 dark:bg-transparent",
   },
@@ -234,7 +234,7 @@ export function SkillsSection() {
     <section
       id="competences"
       ref={sectionRef}
-      className="py-20 lg:py-32 relative overflow-hidden bg-gradient-to-b from-transparent via-primary/5 to-transparent dark:bg-none"
+      className="py-8 lg:py-12 relative overflow-hidden bg-gradient-to-b from-transparent via-primary/5 to-transparent dark:bg-none"
     >
       {/* Animated background decorations - version light mode adaptée */}
       {isMounted && (

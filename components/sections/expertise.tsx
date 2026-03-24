@@ -97,7 +97,7 @@ export function ExpertiseSection() {
     <section
       id="expertise"
       ref={sectionRef}
-      className="py-20 lg:py-32 bg-muted/30 relative overflow-hidden"
+      className="py-8 lg:py-12 bg-muted/30 relative overflow-hidden"
     >
       {/* Animated background decorations */}
       {isMounted && (

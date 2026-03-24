@@ -153,7 +153,7 @@ export function AboutSection() {
     <section 
       id="apropos" 
       ref={sectionRef}
-      className="py-20 lg:py-32 relative overflow-hidden"
+      className="py-8 lg:py-12 relative overflow-hidden"
     >
       {/* Animated background decorations - seulement si monté */}
       {isMounted && (

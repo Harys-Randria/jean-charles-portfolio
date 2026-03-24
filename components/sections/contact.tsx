@@ -1,25 +1,21 @@
 "use client"
 
-import { useState } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { useInView } from "framer-motion"
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
 import Image from "next/image"
 import { 
   Mail, 
   Phone, 
   Linkedin, 
-  Send, 
-  CheckCircle, 
   Calendar, 
   Users, 
   Sparkles,
-  ExternalLink 
+  ExternalLink,
+  Clock,
+  CheckCircle2
 } from "lucide-react"
 
 interface ContactMethod {
@@ -36,16 +32,6 @@ interface ContactMethod {
 }
 
 const contactMethods: ContactMethod[] = [
-  {
-    icon: Mail,
-    label: "Adresse e-mail",
-    value: "jc.decourtheix@outlook.com",
-    href: "mailto:jc.decourtheix@outlook.com",
-    gradient: "from-blue-500 to-blue-400",
-    bgLight: "bg-blue-50",
-    bgDark: "dark:bg-blue-500/10",
-    isCustomIcon: false,
-  },
   {
     icon: Phone,
     label: "Téléphone",
@@ -70,7 +56,7 @@ const contactMethods: ContactMethod[] = [
     icon: null,
     customIcon: "/icons/malt.png",
     label: "Malt",
-    value: "Profil Malt",
+    value: "Jean-charles Decourtheix",
     href: "https://www.malt.fr/profile/jeancharlesdecourtheix",
     gradient: "from-red-500 to-red-400",
     bgLight: "bg-red-50",
@@ -79,20 +65,10 @@ const contactMethods: ContactMethod[] = [
     hasWhiteBackground: true,
   },
   {
-    icon: Calendar,
-    label: "Calendly",
-    value: "Prendre rendez-vous",
-    href: "https://calendly.com/jc-decourtheix",
-    gradient: "from-purple-500 to-purple-400",
-    bgLight: "bg-purple-50",
-    bgDark: "dark:bg-purple-500/10",
-    isCustomIcon: false,
-  },
-  {
     icon: null,
     customIcon: "/icons/collective.png",
     label: "Collective",
-    value: "Profil Collective",
+    value: "Jean-charles Decourtheix",
     href: "https://www.collective.work/profile/jeancharles-decourtheix",
     gradient: "from-orange-500 to-orange-400",
     bgLight: "bg-orange-50",
@@ -104,8 +80,6 @@ const contactMethods: ContactMethod[] = [
 
 export function ContactSection() {
   const sectionRef = useRef<HTMLElement>(null)
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isMounted, setIsMounted] = useState(false)
   const [particles, setParticles] = useState<Array<{ x: number; y: number }>>([])
@@ -122,7 +96,7 @@ export function ContactSection() {
 
   useEffect(() => {
     setIsMounted(true)
-    const newParticles = [...Array(6)].map(() => ({
+    const newParticles = [...Array(8)].map(() => ({
       x: Math.random() * 100,
       y: Math.random() * 100,
     }))
@@ -153,15 +127,6 @@ export function ContactSection() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [isMounted])
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    setIsLoading(false)
-    setIsSubmitted(true)
-  }
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -191,7 +156,7 @@ export function ContactSection() {
     <section
       id="contact"
       ref={sectionRef}
-      className="py-20 lg:py-32 relative overflow-hidden bg-gradient-to-b from-transparent via-primary/5 to-transparent dark:bg-none"
+      className="py-8 lg:py-12 relative overflow-hidden bg-gradient-to-b from-transparent via-primary/5 to-transparent dark:bg-none"
     >
       {/* Animated background decorations */}
       {isMounted && (
@@ -263,11 +228,11 @@ export function ContactSection() {
             </span>
           </h2>
           <p className="text-gray-600 dark:text-muted-foreground max-w-2xl mx-auto">
-            Vous avez un projet ? N&apos;hésitez pas à me contacter
+            Prenons rendez-vous pour discuter de votre projet
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto items-start">
           {/* Contact info - Grille de contacts */}
           <motion.div
             variants={containerVariants}
@@ -279,7 +244,7 @@ export function ContactSection() {
               variants={itemVariants}
               className="text-2xl font-bold text-gray-800 dark:text-white mb-6"
             >
-              Mes coordonnées
+              Me contacter
             </motion.h3>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -301,7 +266,6 @@ export function ContactSection() {
                       >
                         {/* Icône personnalisée ou Lucide */}
                         {contact.isCustomIcon ? (
-                          // Vérification que customIcon existe
                           contact.customIcon ? (
                             <motion.div 
                               className={`
@@ -355,7 +319,7 @@ export function ContactSection() {
             {/* Disponibilité */}
             <motion.div
               variants={itemVariants}
-              className="mt-6 p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20"
+              className="mt-6 p-4 bg-green-500/10 dark:bg-green-500/10 rounded-lg border border-green-500/20"
             >
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
@@ -364,123 +328,92 @@ export function ContactSection() {
                 </p>
               </div>
             </motion.div>
+
+            {/* Badge de réponse rapide */}
+            <motion.div
+              variants={itemVariants}
+              className="flex items-center justify-center md:justify-start gap-2 text-sm text-gray-500 dark:text-gray-500"
+            >
+              <Clock className="w-4 h-4" />
+              <span>Réponse sous 24h</span>
+            </motion.div>
           </motion.div>
 
-          {/* Contact form */}
+          {/* Calendly Section */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 0.6, delay: 0.3 }}
+            className="h-full"
           >
-            <Card className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:shadow-xl transition-all duration-300 overflow-hidden hover:border-primary/30 dark:hover:border-primary/30">
+            <Card className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:shadow-xl transition-all duration-300 overflow-hidden hover:border-primary/30 dark:hover:border-primary/30 h-full">
+              
               <CardContent className="p-6">
-                {isSubmitted ? (
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="flex flex-col items-center justify-center py-12 text-center"
+                <div className="text-center mb-6">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={isInView ? { scale: 1 } : { scale: 0 }}
+                    transition={{ delay: 0.4, type: "spring" }}
+                    className="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-purple-400 flex items-center justify-center mx-auto mb-4 shadow-lg"
                   >
-                    <motion.div 
-                      className="w-20 h-20 rounded-full gradient-primary flex items-center justify-center mb-4"
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 0.5, delay: 0.2 }}
-                    >
-                      <CheckCircle className="w-10 h-10 text-white" />
-                    </motion.div>
-                    <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
-                      Message envoyé !
-                    </h3>
-                    <p className="text-gray-600 dark:text-muted-foreground">
-                      Merci pour votre message. Je vous répondrai dans les plus brefs délais.
-                    </p>
-                    <Button
-                      onClick={() => setIsSubmitted(false)}
-                      variant="outline"
-                      className="mt-6"
-                    >
-                      Envoyer un autre message
-                    </Button>
+                    <Calendar className="w-8 h-8 text-white" />
                   </motion.div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name" className="text-gray-700 dark:text-gray-300">
-                        Votre nom
-                      </Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        placeholder="Jean Dupont"
-                        required
-                        className="bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/10 focus:border-primary transition-colors"
-                      />
-                    </div>
+                  
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
+                    Planifions un rendez-vous
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    Choisissez le créneau qui vous convient le mieux
+                  </p>
+                  
+                  <div className="flex items-center justify-center gap-2 mb-6">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    <span className="text-xs text-gray-500 dark:text-gray-400">Gratuit · Sans engagement</span>
+                  </div>
+                </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">
-                        Votre adresse e-mail
-                      </Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="jean@example.com"
-                        required
-                        className="bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/10 focus:border-primary transition-colors"
-                      />
-                    </div>
+                {/* Calendly Button */}
+                <motion.a
+                  href="https://calendly.com/jc-decourtheix"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="block"
+                >
+                  <Button
+                    size="lg"
+                    className="w-full gradient-primary text-white hover:opacity-90 transition-opacity relative overflow-hidden group"
+                  >
+                    <Calendar className="w-4 h-4 mr-2" />
+                    <span className="relative z-10">Prendre rendez-vous</span>
+                    <motion.div 
+                      className="absolute inset-0 bg-white/20"
+                      initial={{ x: '-100%' }}
+                      whileHover={{ x: '100%' }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  </Button>
+                </motion.a>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="subject" className="text-gray-700 dark:text-gray-300">
-                        Sujet
-                      </Label>
-                      <Input
-                        id="subject"
-                        name="subject"
-                        placeholder="Projet de développement web"
-                        required
-                        className="bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/10 focus:border-primary transition-colors"
-                      />
+                {/* Avantages Calendly */}
+                <motion.div 
+                  className="mt-6 pt-6 border-t border-gray-200 dark:border-white/10"
+                  initial={{ opacity: 0 }}
+                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ delay: 0.6 }}
+                >
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="text-center p-2 rounded-lg bg-gray-50 dark:bg-white/5">
+                      <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Appel vidéo</p>
+                      <p className="text-[10px] text-gray-500 dark:text-gray-500">Google Meet / Teams</p>
                     </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="message" className="text-gray-700 dark:text-gray-300">
-                        Votre message
-                      </Label>
-                      <Textarea
-                        id="message"
-                        name="message"
-                        placeholder="Décrivez votre projet..."
-                        rows={5}
-                        required
-                        className="bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/10 focus:border-primary transition-colors resize-none"
-                      />
+                    <div className="text-center p-2 rounded-lg bg-gray-50 dark:bg-white/5">
+                      <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Durée</p>
+                      <p className="text-[10px] text-gray-500 dark:text-gray-500">30 minutes</p>
                     </div>
-
-                    <Button
-                      type="submit"
-                      className="w-full gradient-primary text-white hover:opacity-90 transition-opacity relative overflow-hidden group"
-                      disabled={isLoading}
-                    >
-                      <motion.span
-                        animate={isLoading ? { opacity: 0 } : { opacity: 1 }}
-                        className="flex items-center justify-center"
-                      >
-                        <Send className="w-4 h-4 mr-2" />
-                        Envoyer le message
-                      </motion.span>
-                      {isLoading && (
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          className="absolute inset-0 flex items-center justify-center"
-                        >
-                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        </motion.div>
-                      )}
-                    </Button>
-                  </form>
-                )}
+                  </div>
+                </motion.div>
               </CardContent>
             </Card>
           </motion.div>

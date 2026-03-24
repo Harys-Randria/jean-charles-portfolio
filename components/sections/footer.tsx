@@ -159,7 +159,7 @@ export function Footer() {
   return (
     <footer
       ref={footerRef}
-      className="relative py-16 overflow-hidden bg-gradient-to-b from-transparent via-primary/5 to-transparent dark:bg-none border-t border-gray-200 dark:border-white/10"
+      className="relative py-8 lg:py-12 overflow-hidden bg-gradient-to-b from-transparent via-primary/5 to-transparent dark:bg-none border-t border-gray-200 dark:border-white/10"
     >
       {/* Animated background decorations */}
       {isMounted && (

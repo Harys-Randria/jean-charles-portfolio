@@ -123,7 +123,7 @@ export function EducationSection() {
     <section
       id="formation"
       ref={sectionRef}
-      className="py-20 lg:py-32 relative overflow-hidden bg-gradient-to-b from-transparent via-primary/5 to-transparent dark:bg-none"
+      className="py-8 lg:py-12 relative overflow-hidden bg-gradient-to-b from-transparent via-primary/5 to-transparent dark:bg-none"
     >
       {/* Animated background decorations */}
       {isMounted && (
