@@ -119,7 +119,7 @@ export function HeroSection() {
   return (
     <section
       id="accueil"
-      className="relative h-screen flex flex-col overflow-hidden gradient-background"
+      className="relative h-screen flex flex-col gradient-background"
     >
       {/* Animated gradient blobs with mouse parallax */}
       <div className="absolute inset-0 overflow-hidden">

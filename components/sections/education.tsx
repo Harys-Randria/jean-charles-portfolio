@@ -37,7 +37,7 @@ const languages = [
   {
     flag: "🇬🇧",
     language: "Anglais",
-    level: "Niveau professionnel",
+    level: "Professionnel",
     proficiency: 85,
     color: "from-purple-500 to-purple-400",
     bgLight: "bg-purple-50",

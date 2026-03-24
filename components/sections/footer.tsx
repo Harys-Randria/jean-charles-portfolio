@@ -29,9 +29,9 @@ const socialLinks = [
     icon: Linkedin,
     label: "LinkedIn",
     href: "https://linkedin.com/in/jean-charles-decourtheix/",
-    bgColor: "bg-primary/10",
+    bgColor: "bg-primary/10 dark:bg-primary/10",
     hoverBg: "hover:bg-primary",
-    textColor: "text-primary",
+    textColor: "text-primary dark:text-primary",
     hoverText: "hover:text-white",
     isCustomIcon: false,
   },
@@ -39,9 +39,9 @@ const socialLinks = [
     icon: Mail,
     label: "Email",
     href: "mailto:jc.decourtheix@outlook.com",
-    bgColor: "bg-primary/10",
+    bgColor: "bg-primary/10 dark:bg-primary/10",
     hoverBg: "hover:bg-primary",
-    textColor: "text-primary",
+    textColor: "text-primary dark:text-primary",
     hoverText: "hover:text-white",
     isCustomIcon: false,
   },
@@ -50,10 +50,10 @@ const socialLinks = [
     customIcon: "/icons/malt.png",
     label: "Malt",
     href: "https://www.malt.fr/profile/jeancharlesdecourtheix",
-    bgColor: "bg-red-50 dark:bg-red-500/10",
-    hoverBg: "hover:bg-red-500",
-    textColor: "text-red-600 dark:text-red-400",
-    hoverText: "hover:text-white",
+    bgColor: "bg-white dark:bg-white/10",
+    hoverBg: "hover:bg-white dark:hover:bg-white/15",
+    textColor: "",
+    hoverText: "",
     isCustomIcon: true,
     hasWhiteBackground: true,
   },
@@ -62,10 +62,10 @@ const socialLinks = [
     customIcon: "/icons/collective.png",
     label: "Collective",
     href: "https://www.collective.work/profile/jeancharles-decourtheix",
-    bgColor: "bg-orange-50 dark:bg-orange-500/10",
-    hoverBg: "hover:bg-orange-500",
-    textColor: "text-orange-600 dark:text-orange-400",
-    hoverText: "hover:text-white",
+    bgColor: "bg-white dark:bg-white/10",
+    hoverBg: "hover:bg-white dark:hover:bg-white/15",
+    textColor: "",
+    hoverText: "",
     isCustomIcon: true,
     hasWhiteBackground: true,
   },
@@ -161,6 +161,7 @@ export function Footer() {
       ref={footerRef}
       className="relative py-8 lg:py-12 overflow-hidden bg-gradient-to-b from-transparent via-primary/5 to-transparent dark:bg-none border-t border-gray-200 dark:border-white/10"
     >
+
       {/* Animated background decorations */}
       {isMounted && (
         <>
@@ -232,14 +233,18 @@ export function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={{ y: -2, scale: 1.1 }}
+                    transition={{ type: "spring", damping: 10 }}
                     className={`
                       w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300
-                      ${link.bgColor} ${link.textColor} ${link.hoverBg} ${link.hoverText}
+                      ${link.bgColor}
+                      ${link.hoverBg}
+                      ${link.textColor}
+                      ${link.hoverText}
                     `}
                     aria-label={link.label}
                   >
                     {link.isCustomIcon && link.customIcon ? (
-                      <div className="w-5 h-5 relative">
+                      <div className="w-5 h-5 relative flex items-center justify-center">
                         <Image
                           src={link.customIcon}
                           alt={link.label}
